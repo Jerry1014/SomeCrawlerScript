@@ -9,8 +9,9 @@ from email.mime.image import MIMEImage
 
 def send_qr_to_email(uuid, status, qrcode):
     if status == '0':
+        print('sending email')
         send_str = '<html><body>'
-        send_str += '<img src="cid:image1" alt="image1" align="center" width=100% >'
+        send_str += '<img src="cid:image1" alt="image1" align="center" width=30% >'
         send_str += '</body></html>'
         qr_image = MIMEImage(qrcode)
         qr_image.add_header('Content-ID', 'image1')
@@ -31,4 +32,6 @@ def send_qr_to_email(uuid, status, qrcode):
 bot = Bot(True, qr_callback=send_qr_to_email)
 
 kindle = bot.mps().search('Kindle杂志公社')[0]
+print('sending msg')
 kindle.send('88387')
+print('all donw')
