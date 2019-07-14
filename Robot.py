@@ -29,7 +29,7 @@ def send_qr_to_email(uuid, status, qrcode):
         server.sendmail('13322468550@163.com', '757320383@qq.com', msg.as_string())
 
 
-if sys.argv[-1] == '-l' or sys.argv[-1] == '-L':
+if len(sys.argv) < 2 or sys.argv[-1] == '-l' or sys.argv[-1] == '-L':
     send_qr_to_email = None
 bot = Bot(True, qr_callback=send_qr_to_email)
 
