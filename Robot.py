@@ -31,9 +31,10 @@ def send_qr_to_email(uuid, status, qrcode):
 
 if len(sys.argv) < 2 or sys.argv[-1] == '-l' or sys.argv[-1] == '-L':
     send_qr_to_email = None
-bot = Bot(True, qr_callback=send_qr_to_email)
+bot = Bot(False, qr_callback=send_qr_to_email)
 
 kindle = bot.mps().search('Kindle杂志公社')[0]
 print('sending msg')
 kindle.send('88387')
 print('all donw')
+bot.logout()
