@@ -25,7 +25,7 @@ def send_qr_to_email(uuid, status, qrcode):
         msg['Subject'] = "微信登录"  # 邮件的主题，也可以说是标题
 
         server = smtplib.SMTP('smtp.163.com', 25)  # 发件人邮箱中的SMTP服务器，端口是25
-        server.login('13322468550@163.com', '')  # 括号中对应的是发件人邮箱账号、邮箱密码
+        server.login('13322468550@163.com', '101412315')  # 括号中对应的是发件人邮箱账号、邮箱密码
         server.sendmail('13322468550@163.com', '757320383@qq.com', msg.as_string())
 
 
