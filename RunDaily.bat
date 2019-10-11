@@ -1,2 +1,2 @@
-Start pythonw WeChatRobot.py
-Start python WebRobot-ShadowSky.py
+Start python WeChatRobot.py
+Start pythonw WebRobot-ShadowSky.py

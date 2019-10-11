@@ -36,5 +36,5 @@ bot = Bot(False, qr_callback=send_qr_to_email)
 kindle = bot.mps().search('Kindle杂志公社')[0]
 print('sending msg')
 kindle.send('88387')
-print('all donw')
+print('all done')
 bot.logout()
