@@ -7,8 +7,8 @@ shadowsky_headers = {
 
 cfg = ConfigParser()
 cfg.read('config.ini')
-email = cfg.get('shadow sky', 'email')
-psw = cfg.get('shadow sky', 'password')
+email = cfg['shadow sky']['email']
+psw = cfg['shadow sky']['password']
 login_data = {'email': email, 'passwd': psw, 'remember_me': 'week'}
 shadowsky_session = requests.Session()
 shadowsky_login_page = shadowsky_session.post('https://www.shadowsky.icu/auth/login', headers=shadowsky_headers,
