@@ -1,3 +1,4 @@
+import json
 from configparser import ConfigParser
 from time import time
 
@@ -15,11 +16,26 @@ post_data = {"xm": "黄相铭", "xh": "20164634", "xy": "计算机科学与工�
              "zgtwcxsj": "", "sfyghxdbsy": "无", "sfyghxdbsycxsj": "", "sfygxhdbsy": "无", "sfygxhdbsycxsj": "",
              "sfbrtb": "是", "fdysfty": "否", "tbrxm": "", "tbrxh": "", "tbrxy": "", "dtyy": "",
              "id": None}
-cfg = ConfigParser()
-cfg.read('config.ini')
 with Session() as sess:
-    sess.post(cfg.get('LaJi CheckIn', 'url with psw'))
-    data = sess.post('http://stuinfo.neu.edu.cn/cloud-xxbl/studenLogin').json()['data']
-    post_data['id'] = data
-    cur_time = str(time())[:-4]
-    sess.post(f'http://stuinfo.neu.edu.cn/cloud-xxbl/updateStudentInfo?t={cur_time}', data=post_data)
+    payload = {'_t': int(time())}
+    header = {'Authorization': 'Basic dnVlOnZ1ZQ=='}
+    # 此处的配置文件为了隐藏我的账号密码而设
+    # 可不使用配置文件，而直接将post处的第一个参数（url）修改成（如下），将两处的{}修改为对应的值
+    # http://stuinfo.neu.edu.cn/api/auth/oauth/token?username={学号}&grant_type=password&password={密码}&imageCodeResult=&imageKey=
+    cfg = ConfigParser()
+    cfg.read('config.ini')
+    login_json = json.loads(sess.post(cfg['Laji CheckIn']['url with psw'], headers=header, json=payload).text)
+    # cookies_dict = {'access_token': login_json['access_token'], 'userName': login_json['userName']}
+    # add_dict_to_cookiejar(sess.cookies, cookies_dict)
+
+    header['Authorization'] = 'Bearer ' + login_json['access_token']
+    payload['_t'] = int(time())
+    data = json.loads(sess.post('http://stuinfo.neu.edu.cn/cloud-xxbl/studenLogin', headers=header, json=payload).text)[
+        'data']
+
+    post_data['id'] = data.split(':')[-1]
+    cur_time = int(time() * 1000)
+
+    sess.get(f'http://stuinfo.neu.edu.cn/cloud-xxbl/studentinfo?tag={data}')
+    result = sess.post(f'http://stuinfo.neu.edu.cn/cloud-xxbl/updateStudentInfo?t={cur_time}', json=post_data)
+    input(result.text)

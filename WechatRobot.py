@@ -2,7 +2,7 @@ from wxpy import *
 
 if len(sys.argv) < 2 or sys.argv[-1] == '-l' or sys.argv[-1] == '-L':
     send_qr_to_email = None
-bot = Bot(console_qr=True)
+bot = Bot(console_qr=1)
 
 kindle = bot.mps().search('Kindle杂志公社')[0]
 print('sending msg')
