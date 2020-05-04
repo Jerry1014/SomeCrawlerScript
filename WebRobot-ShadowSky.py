@@ -16,3 +16,4 @@ shadowsky_headers.update({'Origin': 'https://www.shadowsky.icu', 'Referer': 'htt
                           'Accept': 'application/json, text/javascript, */*; q=0.01',
                           'X-Requested-With': 'XMLHttpRequest'})
 shadowsky_checkin_page = shadowsky_session.post('https://www.shadowsky.icu/user/checkin', headers=shadowsky_headers)
+print(shadowsky_checkin_page.json())
