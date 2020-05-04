@@ -1,14 +1,13 @@
 from configparser import ConfigParser
+import os
 
 import requests
 
 shadowsky_headers = {
     "user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
 
-cfg = ConfigParser()
-cfg.read('config.ini')
-email = cfg['shadow sky']['email']
-psw = cfg['shadow sky']['password']
+email = os.environ["SHADOWSKY_ACCOUNT"]
+psw = os.environ["SHADOWSKY_PSW"]
 login_data = {'email': email, 'passwd': psw, 'remember_me': 'week'}
 shadowsky_session = requests.Session()
 shadowsky_login_page = shadowsky_session.post('https://www.shadowsky.icu/auth/login', headers=shadowsky_headers,
