@@ -13,3 +13,14 @@
     - my_fake_ua.random # random ua
     
 ## 其他的小爬虫
+- PaiPaiTracking 京东拍拍上的兴趣商品爬虫
+    - 直接运行
+    - 在文件的头部位置有如下几个设置
+        - if_show_process 是否输出’正在爬取第几页‘的提示
+        - if_write_to_file 是否需要保存到文件
+        - search_threshold 搜索词匹配阈值
+        - filename 结果保存的文件名
+    - 搜索算法并不完美，当前使用的方法是
+        - 按照空格切分搜索词
+        - 计算每个搜索词在商品名称的最大匹配长度并除于关键词长度
+        - 计算所有关键词的平均最大匹配长度比
