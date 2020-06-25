@@ -24,3 +24,12 @@
         - 按照空格切分搜索词
         - 计算每个搜索词在商品名称的最大匹配长度并除于关键词长度
         - 计算所有关键词的平均最大匹配长度比
+- WebRobot-ShadowSky shadowsky的签到爬虫
+    - 设置Github的secrets或通过os添加环境变量
+        - SHADOWSKY_ACCOUNT
+        - SHADOWSKY_PSW
+    - 通过GitHub的action定时运行
+- WechatRobot 微信上的Kindle杂志公社签到爬虫
+    - 第一次需要修改user_code为自己的签到值
+    - 直接运行
+    - 扫码登录
