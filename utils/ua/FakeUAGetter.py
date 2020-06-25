@@ -1,25 +1,27 @@
 # -*- coding:utf-8 -*-
+"""
+获取虚假ua的模块
+"""
 import random
 
-from fake_useragent import UserAgent, FakeUserAgentError
-from socket import timeout
-
-"""
-使用方法
-from FackUA import my_fake_ua # 单例模式
-my_fake_ua.random # random ua
-"""
+try:
+    from fake_useragent import UserAgent, FakeUserAgentError
+    from socket import timeout
+except ImportError:
+    print('没有安装fake_useragent模块，offline将设置为True')
+    offline = True
 
 
-class my_fake_ua:
+class FakeUA:
     """
     用于提供ua，单例模式，fake_ua能用则用，否则用自带的ua集，通过FakeUA.random获取随机ua
     """
 
-    def __init__(self, offline=True):
+    def __init__(self, user_offline=True):
+        user_offline = offline or user_offline
         self.fake_ua = None
         try:
-            if offline:
+            if user_offline:
                 print('offline设置为True，将不更新ua库')
                 raise timeout()
             self.fake_ua = UserAgent()
@@ -60,4 +62,4 @@ class my_fake_ua:
             raise AttributeError(r"Object does'n has attribute '%s'" % item)
 
 
-my_fake_ua = my_fake_ua()
+my_fake_ua = FakeUA()

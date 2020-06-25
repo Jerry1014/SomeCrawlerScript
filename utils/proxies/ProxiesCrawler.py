@@ -1,5 +1,5 @@
 """
-爬取西刺（可自行替换）上的免费代理ip，并保存到文件中
+爬取并提供西刺（可自行替换）上的免费代理ip的模块
 """
 import datetime
 import random
@@ -158,6 +158,3 @@ if __name__ == '__main__':
     test = GetProxies(50, 1)
     test.get_proxies()
     test.save_file()
-
-    test2 = GetProxies(5, 1)
-    test2.get_proxies_by_file('proxies_http.txt', 'http')
