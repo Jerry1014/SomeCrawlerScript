@@ -11,6 +11,9 @@
 - ua/FakeUAGetter 获取随机的虚假UA
     - from FackUA import my_fake_ua # 单例模式
     - my_fake_ua.random # random ua
+- email/EmailSender 用于发送email
+    - EmailSender(smtp_server, sender_name, psw=None)
+    - cls.send_email(subject, msg, receiver_name) 发送email
     
 ## 其他的小爬虫
 - PaiPaiTracking 京东拍拍上的兴趣商品爬虫
