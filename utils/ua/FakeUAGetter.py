@@ -11,6 +11,7 @@ try:
 except ImportError:
     print('没有安装fake_useragent模块，offline将设置为True')
     offline = True
+    FakeUserAgentError = None
 
 
 class FakeUA:
