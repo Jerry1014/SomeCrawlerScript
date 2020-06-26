@@ -3,10 +3,10 @@
 获取虚假ua的模块
 """
 import random
+from socket import timeout
 
 try:
     from fake_useragent import UserAgent, FakeUserAgentError
-    from socket import timeout
     offline = False
 except ImportError:
     print('没有安装fake_useragent模块，offline将设置为True')
