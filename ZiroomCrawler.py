@@ -132,6 +132,7 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
     room_result_list = list()
     first_result = get_result_from_one_page(min_lng, max_lng, min_lat, max_lat, zoom, 1, order_by, sort_flag, min_price,
                                             max_price, feature, leasetype, tag, resblock_id)
+    total_num = first_result['total']
     for i in first_result['rooms']:
         room_result_list.append(ARoomResult(i))
     if first_result:
@@ -142,18 +143,19 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
             if result:
                 for i in result['rooms']:
                     room_result_list.append(ARoomResult(i))
-    return room_result_list
+    return room_result_list, total_num
 
 
 if __name__ == '__main__':
     # 啥都行的
-    the_lowest_price_result = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice', 'asc'
+    the_lowest_price_result, total_num = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice', 'asc'
                                                      , leasetype='2')
     the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2500), (6, 2700))). \
         compare_list(the_lowest_price_result)
+    the_lowest_price_list.append(f'总数：{total_num}')
 
     # 独立卫浴的
-    room_with_toilet_result = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice', 'asc'
+    room_with_toilet_result, _ = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice', 'asc'
                                                      , leasetype='2', feature='3')
     room_with_toilet_list = RoomFilterByBothPriceAndArea(((10, 3200),)).compare_list(room_with_toilet_result)
 
