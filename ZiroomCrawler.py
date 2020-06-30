@@ -17,7 +17,7 @@ from utils.ua.FakeUAGetter import my_fake_ua
 # resblock_id 小区id 使用此项则为在该小区中搜索
 url_template = 'http://www.ziroom.com/map/room/list?' \
                'min_lng={min_lng}&max_lng={max_lng}&min_lat={min_lat}&max_lat={max_lat}&zoom={zoom}&p={page_num}&' \
-               'order_by{order_by}=&sort_flag={sort_flag}&price={min_price},{max_price}&' \
+               'order_by={order_by}&sort_flag={sort_flag}&price={min_price},{max_price}&' \
                'feature={feature}&leasetype={leasetype}&tag={tag}&resblock_id={resblock_id}'
 
 
@@ -75,21 +75,15 @@ class RoomFilterByPrice(RoomFilterBase):
 
 class RoomFilterByBothPriceAndArea(RoomFilterBase):
     """
-    兼顾价格和房间面积，其中area_price_pair形如((5, 2500), (10, 3000), (20, 4000))，含义为小于5平，价格低于2500，妙哉。大于5平小于10
-    平，价格为2500-3000，妙哉。如此类推
+    兼顾价格和房间面积，其中area_price_pair形如((5, 2500), (10, 3000), (20, 4000))，含义为(0,5平)，价格低于2500，妙哉。[5平,10平)，
+    价格为(2500,3000]，妙哉。如此类推。当想设置下界时，可通过将第一个条件设置为(5, 0)来排除小于5平的，上界同理
     """
 
-    def __init__(self, area_price_pair_list, special_tag_price_dict=None):
+    def __init__(self, area_price_pair_list):
         self.area_price_pair_list = area_price_pair_list
-        self.special_tag_price_dict = special_tag_price_dict
 
     def compare(self, a_result: ARoomResult):
         room_price = a_result.price
-        if self.special_tag_price_dict:
-            for i in a_result.tags_list:
-                if i in self.special_tag_price_dict.keys():
-                    room_price -= self.special_tag_price_dict[i]
-
         for area, price in self.area_price_pair_list:
             if a_result.room_area < area:
                 if room_price > price:
@@ -128,6 +122,7 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
                            feature='', leasetype='', tag='', resblock_id=''):
     """
     爬取搜索结果，参数含义请看文件开头对url的描述
+    :return list of ARoomResult, total_num of room
     """
     room_result_list = list()
     first_result = get_result_from_one_page(min_lng, max_lng, min_lat, max_lat, zoom, 1, order_by, sort_flag, min_price,
@@ -148,16 +143,16 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
 
 if __name__ == '__main__':
     # 啥都行的
-    the_lowest_price_result, total_num = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice', 'asc'
-                                                     , leasetype='2')
-    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2500), (6, 2700))). \
+    the_lowest_price_result, total_num = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16,
+                                                                'sellPrice', 'asc', leasetype='2')
+    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2400), (6, 2500), (7, 2600))). \
         compare_list(the_lowest_price_result)
     the_lowest_price_list.append(f'总数：{total_num}')
 
     # 独立卫浴的
-    room_with_toilet_result, _ = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice', 'asc'
-                                                     , leasetype='2', feature='3')
-    room_with_toilet_list = RoomFilterByBothPriceAndArea(((10, 3200),)).compare_list(room_with_toilet_result)
+    room_with_toilet_result, _ = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice',
+                                                        'asc', leasetype='2', feature='3')
+    room_with_toilet_list = RoomFilterByBothPriceAndArea(((6, 3200),)).compare_list(room_with_toilet_result)
 
     # 发邮件
     sender_name = os.environ['EMAIL_COUNT']
