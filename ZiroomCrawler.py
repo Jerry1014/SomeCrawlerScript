@@ -15,10 +15,11 @@ from utils.ua.FakeUAGetter import my_fake_ua
 # leasetype 2 年租
 # tag 1 立即 9 预定
 # resblock_id 小区id 使用此项则为在该小区中搜索
+# trainsport 通勤工具 transit 公交 walk 走路 ride 骑行 minute 通勤时间（分钟） 骑行10分钟大致路程为2km
 url_template = 'http://www.ziroom.com/map/room/list?' \
                'min_lng={min_lng}&max_lng={max_lng}&min_lat={min_lat}&max_lat={max_lat}&zoom={zoom}&p={page_num}&' \
-               'order_by={order_by}&sort_flag={sort_flag}&price={min_price},{max_price}&' \
-               'feature={feature}&leasetype={leasetype}&tag={tag}&resblock_id={resblock_id}'
+               'order_by={order_by}&sort_flag={sort_flag}&price={min_price},{max_price}&feature={feature}&' \
+               'leasetype={leasetype}&tag={tag}&resblock_id={resblock_id}&transport={transport}&minute={minute}'
 
 
 class ARoomResult:
@@ -30,7 +31,10 @@ class ARoomResult:
         self.room_name = raw_json['name']
         desc = raw_json['desc']
         self.room_area = float(search(r'(\d+(\.\d{1,2})?)㎡', desc).groups()[0])
-        self.storey = search(r'(\d{1,3}(/\d{1,3})?)层', desc).groups()[0]
+        try:
+            self.storey = search(r'(\d{1,3}(/\d{1,3})?)层', desc).groups()[0]
+        except AttributeError:
+            self.storey = '无楼层数据'
         self.detail_url = raw_json['detail_url'][2:]
         self.img_url = raw_json['photo'][2:]
         self.price = int(raw_json['price'])
@@ -95,14 +99,14 @@ class RoomFilterByBothPriceAndArea(RoomFilterBase):
 
 
 def get_result_from_one_page(min_lng, max_lng, min_lat, max_lat, zoom, page_num, order_by, sort_flag, min_price='',
-                             max_price='', feature='', leasetype='', tag='', resblock_id=''):
+                             max_price='', feature='', leasetype='', tag='', resblock_id='', transport='', minute=''):
     """
     爬取一页搜索结果
     """
     url = url_template.format(min_lng=min_lng, max_lng=max_lng, min_lat=min_lat, max_lat=max_lat, zoom=zoom,
                               page_num=page_num, order_by=order_by, sort_flag=sort_flag, min_price=min_price,
                               max_price=max_price, feature=feature, leasetype=leasetype, tag=tag,
-                              resblock_id=resblock_id)
+                              resblock_id=resblock_id, transport=transport, minute=minute)
     max_retry = 3
     while max_retry > 0:
         headers = {'User-Agent': my_fake_ua.random}
@@ -119,15 +123,16 @@ def get_result_from_one_page(min_lng, max_lng, min_lat, max_lat, zoom, page_num,
 
 
 def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, sort_flag, min_price='', max_price='',
-                           feature='', leasetype='', tag='', resblock_id=''):
+                           feature='', leasetype='', tag='', resblock_id='', transport='', minute=''):
     """
     爬取搜索结果，参数含义请看文件开头对url的描述
     :return list of ARoomResult, total_num of room
     """
     room_result_list = list()
     first_result = get_result_from_one_page(min_lng, max_lng, min_lat, max_lat, zoom, 1, order_by, sort_flag, min_price,
-                                            max_price, feature, leasetype, tag, resblock_id)
-    total_num = first_result['total']
+                                            max_price, feature, leasetype, tag, resblock_id, transport, minute)
+    total_room_num = first_result['total']
+    print(f'过滤前的搜索到的房间总数为{total_room_num}')
     for i in first_result['rooms']:
         room_result_list.append(ARoomResult(i))
     if first_result:
@@ -138,21 +143,22 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
             if result:
                 for i in result['rooms']:
                     room_result_list.append(ARoomResult(i))
-    return room_result_list, total_num
+    return room_result_list, total_room_num
 
 
 if __name__ == '__main__':
     # 啥都行的
-    the_lowest_price_result, total_num = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16,
-                                                                'sellPrice', 'asc', leasetype='2')
-    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2400), (6, 2500), (7, 2600))). \
+    the_lowest_price_result, total_num = get_room_search_result(116.438782, 116.47069, 39.966579, 39.985886, 16,
+                                                                'sellPrice', 'asc', leasetype='2', transport='ride',
+                                                                minute='10')
+    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2500), (6, 2700))). \
         compare_list(the_lowest_price_result)
     the_lowest_price_list.append(f'总数：{total_num}')
 
     # 独立卫浴的
-    room_with_toilet_result, _ = get_room_search_result(116.48986, 116.513611, 39.974244, 39.998265, 16, 'sellPrice',
-                                                        'asc', leasetype='2', feature='3')
-    room_with_toilet_list = RoomFilterByBothPriceAndArea(((6, 3200),)).compare_list(room_with_toilet_result)
+    room_with_toilet_result, _ = get_room_search_result(116.438782, 116.47069, 39.966579, 39.985886, 16, 'sellPrice',
+                                                        'asc', leasetype='2', feature='3', transport='ride', minute='10')
+    room_with_toilet_list = RoomFilterByBothPriceAndArea(((6, 4000),)).compare_list(room_with_toilet_result)
 
     # 发邮件
     sender_name = os.environ['EMAIL_COUNT']
