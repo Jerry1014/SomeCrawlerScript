@@ -148,17 +148,12 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
 
 if __name__ == '__main__':
     # 啥都行的
-    the_lowest_price_result, total_num = get_room_search_result(116.438782, 116.47069, 39.966579, 39.985886, 16,
-                                                                'sellPrice', 'asc', leasetype='2', transport='ride',
-                                                                minute='10')
+    the_lowest_price_result, total_num = get_room_search_result(116.427356, 116.491171, 39.960641, 39.999453, 15,
+                                                                'sellPrice', 'asc', 
+                                                                transport='ride', minute='10')
     the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2500), (6, 2700))). \
         compare_list(the_lowest_price_result)
     the_lowest_price_list.append(f'总数：{total_num}')
-
-    # 独立卫浴的
-    room_with_toilet_result, _ = get_room_search_result(116.438782, 116.47069, 39.966579, 39.985886, 16, 'sellPrice',
-                                                        'asc', leasetype='2', feature='3', transport='ride', minute='10')
-    room_with_toilet_list = RoomFilterByBothPriceAndArea(((6, 4000),)).compare_list(room_with_toilet_result)
 
     # 发邮件
     sender_name = os.environ['EMAIL_COUNT']
@@ -166,7 +161,6 @@ if __name__ == '__main__':
     sender = EmailSender('smtp.163.com', sender_name, psw)
 
     subject = '自如爬取结果'
-    msg = '\n'.join(
-        [str(i) for i in the_lowest_price_list] + ['---------------------'] + [str(i) for i in room_with_toilet_list])
+    msg = '\n'.join([str(i) for i in the_lowest_price_list])
     receiver_name = os.environ['EMAIL_RECEIVE']
     sender.send_email(subject, msg, receiver_name)
