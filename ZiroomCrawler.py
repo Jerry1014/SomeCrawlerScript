@@ -148,7 +148,7 @@ def get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, order_by, s
 
 if __name__ == '__main__':
     # 啥都行的
-    the_lowest_price_result, total_num = get_room_search_result(116.427356, 116.491171, 39.960641, 39.999453, 15,
+    the_lowest_price_result, total_num = get_room_search_result(116.427356, 116.491171, 39.960641, 39.999453, 16,
                                                                 'sellPrice', 'asc', 
                                                                 transport='ride', minute='10')
     the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2500), (6, 2700))). \
