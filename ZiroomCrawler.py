@@ -151,16 +151,17 @@ if __name__ == '__main__':
     the_lowest_price_result, total_num = get_room_search_result(116.427356, 116.491171, 39.960641, 39.999453, 16,
                                                                 'sellPrice', 'asc', 
                                                                 transport='ride', minute='10')
-    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2400), (6, 2600))). \
+    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2200), (6, 2500))). \
         compare_list(the_lowest_price_result)
-    the_lowest_price_list.append(f'总数：{total_num}')
-
+    
     # 发邮件
-    sender_name = os.environ['EMAIL_COUNT']
-    psw = os.environ['EMAIL_PSW']
-    sender = EmailSender('smtp.163.com', sender_name, psw)
+    if the_lowest_price_list:
+      the_lowest_price_list.append(f'总数：{total_num}')
+      sender_name = os.environ['EMAIL_COUNT']
+      psw = os.environ['EMAIL_PSW']
+      sender = EmailSender('smtp.163.com', sender_name, psw)
 
-    subject = '自如爬取结果'
-    msg = '\n'.join([str(i) for i in the_lowest_price_list])
-    receiver_name = os.environ['EMAIL_RECEIVE']
-    sender.send_email(subject, msg, receiver_name)
+      subject = '自如爬取结果'
+      msg = '\n'.join([str(i) for i in the_lowest_price_list])
+      receiver_name = os.environ['EMAIL_RECEIVE']
+      sender.send_email(subject, msg, receiver_name)
