@@ -151,7 +151,7 @@ if __name__ == '__main__':
     the_lowest_price_result, total_num = get_room_search_result(116.427356, 116.491171, 39.960641, 39.999453, 16,
                                                                 'sellPrice', 'asc', 
                                                                 transport='ride', minute='10')
-    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2500), (6, 2700))). \
+    the_lowest_price_list = RoomFilterByBothPriceAndArea(((5, 2400), (6, 2600))). \
         compare_list(the_lowest_price_result)
     the_lowest_price_list.append(f'总数：{total_num}')
 
