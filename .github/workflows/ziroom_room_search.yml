@@ -2,7 +2,7 @@ name: ziroom
 
 on:
   schedule:
-    - cron: '0 0-12 * * *'
+    - cron: '0 0 1/7 * *'
 
 jobs:
   build:
