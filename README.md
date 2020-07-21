@@ -17,7 +17,9 @@
     
 ## 其他的小爬虫
 - PaiPaiTracking 京东拍拍上的兴趣商品爬虫
-    - 直接运行
+    - 运行方式
+        - 直接运行 （if_crawling设置为False）
+        - GitHub action自动运行 （通过PAIPAI_KEYWORD传递keyword，邮箱设置参照自如爬虫）
     - 在文件的头部位置有如下几个设置
         - if_show_process 是否输出’正在爬取第几页‘的提示
         - if_write_to_file 是否需要保存到文件
