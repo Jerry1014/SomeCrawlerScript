@@ -1,6 +1,7 @@
 """
 爬取京东拍拍上的拍卖信息，提前找到兴趣商品的拍卖时间
 """
+import os
 from math import ceil
 from os import remove
 from os.path import exists
@@ -12,6 +13,7 @@ from requests import get
 from utils.ua.FakeUAGetter import my_fake_ua
 
 # 标记 是否显示爬取进度 是否将结果写入文件 搜索匹配阈值
+if_crawing = True
 if_show_process = False
 if_write_to_file = False
 search_threshold = 0.6
@@ -20,7 +22,10 @@ if if_write_to_file:
     if exists(filename):
         remove(filename)
 
-key_word_list = input('输入要搜索的关键字：').split()
+if if_crawing:
+    key_word_list = os.environ['PAIPAI_KEYWORD']
+else:
+    key_word_list = input('输入要搜索的关键字：').split()
 total_num = 1
 page_size = 100
 cur_page_num = 1
