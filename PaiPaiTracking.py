@@ -14,7 +14,7 @@ from utils.email.EmailSender import EmailSender
 from utils.ua.FakeUAGetter import my_fake_ua
 
 # 标记 是否显示爬取进度 是否将结果写入文件 搜索匹配阈值
-if_crawling = False
+if_crawling = True
 if_show_process = False
 if_write_to_file = False
 search_threshold = 0.6
