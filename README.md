@@ -39,8 +39,9 @@
     - 直接运行
     - 扫码登录
 - ZiroomCrawler 自如租房小爬虫
-    - get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, page_num, order_by, sort_flag, min_price='',
-                             max_price='', feature='', leasetype='', tag='', resblock_id='', transport='', minute='')
+    - get_room_search_result(min_lng, max_lng, min_lat, max_lat, zoom, page_num, order_by, sort_flag, room_filter_args,
+                           court_filter_args=None, min_price='', max_price='', feature='', leasetype='', tag='', 
+                           resblock_id='', transport='', minute='')
         - lng经度 lat维度 zoom缩放等级 此三项用于确定搜索的地图范围 百度地图
         - order_by：sellPrice sort_flag：asc 排列方式和顺序
         - feature 3 独卫 4 阳台 多选时为：3|4
@@ -49,10 +50,7 @@
         - resblock_id 小区id 使用此项则为在该小区中搜索
         - trainsport 通勤工具 transit 公交 walk 走路 ride 骑行 minute 通勤时间（分钟） 骑行10分钟大致路程为2km
     - 房屋筛选
-        - RoomFilterByPrice(max_price)
-            - 大于设置的最高价的房屋均会被排除
-        - RoomFilterByBothPriceAndArea(compare_list)
-            - compare_list 例如形如((5, 2500), (10, 3000), (20, 4000))，含义为(0,5平)，价格低于2500，妙哉。[5平,10平)，价格为(2500,3000]，妙哉。如此类推。当想设置下界时，可通过将第一个条件设置为(5, 0)来排除小于5平的，上界同理
-        
+        - room_filter_args 例如形如((5, 2500), (10, 3000), (20, 4000))，含义为(0,5平)，价格低于2500，妙哉。[5平,10平)，价格为(2500,3000]，妙哉。如此类推。当想设置下界时，可通过将第一个条件设置为(5, 0)来排除小于5平的，上界同理
+        - court_filter_args 小区建筑年代
         
 
