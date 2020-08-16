@@ -325,7 +325,7 @@ if __name__ == '__main__':
     FILTER_COURT = ('芍药居北里',)
     the_lowest_price_list, total_num = get_room_search_result(116.427356, 116.491171, 39.960641, 39.999453, 16,
                                                               'sellPrice', 'asc',
-                                                              ((6, 2500), (8, 2600), (10, 2700), (15, 3000)), 2003,
+                                                              ((6, 2000), (8, 2400)), 2003,
                                                               transport='ride', minute='10')
 
     # 发邮件
