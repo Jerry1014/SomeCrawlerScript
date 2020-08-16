@@ -92,14 +92,15 @@ while cur_page_num <= ceil(total_num / page_size):
         print(f'网络请求失败，状态码{response.status_code}')
     cur_page_num += 1
 
-if if_crawling and result_list:
-    sender_name = os.environ['EMAIL_COUNT']
-    psw = os.environ['EMAIL_PSW']
-    sender = EmailSender('smtp.163.com', sender_name, psw)
+if if_crawling:
+    if result_list:
+        sender_name = os.environ['EMAIL_COUNT']
+        psw = os.environ['EMAIL_PSW']
+        sender = EmailSender('smtp.163.com', sender_name, psw)
 
-    subject = '拍拍爬取结果'
-    msg = '\n'.join([str(i) for i in result_list])
-    receiver_name = os.environ['EMAIL_RECEIVE']
-    sender.send_email(subject, msg, receiver_name)
-else:
-    show_result(result_list)
+        subject = '拍拍爬取结果'
+        msg = '\n'.join([str(i) for i in result_list])
+        receiver_name = os.environ['EMAIL_RECEIVE']
+        sender.send_email(subject, msg, receiver_name)
+    else:
+        show_result(result_list)
