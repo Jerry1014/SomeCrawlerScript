@@ -103,4 +103,6 @@ if if_crawling:
         receiver_name = os.environ['EMAIL_RECEIVE']
         sender.send_email(subject, msg, receiver_name)
     else:
-        show_result(result_list)
+        print('没有爬取结果')
+else:
+    show_result(result_list)
