@@ -24,5 +24,6 @@ jobs:
       env:
         SHADOWSKY_ACCOUNT: ${{secrets.SHADOWSKY_ACCOUNT}}
         SHADOWSKY_PSW: ${{secrets.SHADOWSKY_PSW}}
+        SHADOWSKY_ADDRESS: ${{secrets.SHADOWSKY_ADDRESS}}
       run:
         python WebRobot-ShadowSky.py
