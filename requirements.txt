@@ -1,3 +1,2 @@
-beautifulsoup4~=4.9.1
-requests~=2.24.0
-wxpy~=0.3.9.8
+requests>=2.30.0
+wxpy>=0.3.9.8
