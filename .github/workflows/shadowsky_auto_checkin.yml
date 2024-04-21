@@ -27,3 +27,4 @@ jobs:
         SHADOWSKY_ADDRESS: ${{secrets.SHADOWSKY_ADDRESS}}
       run:
         python WebRobot-ShadowSky.py
+    - uses: gautamkrishnar/keepalive-workflow@master
