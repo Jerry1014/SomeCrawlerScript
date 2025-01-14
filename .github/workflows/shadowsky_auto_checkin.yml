@@ -6,6 +6,7 @@ name: shadowsky_checkin
 on:
   schedule:
     - cron: '0 8 * * *'
+  workflow_dispatch:
 
 jobs:
   shadowsky_checkin_job:
