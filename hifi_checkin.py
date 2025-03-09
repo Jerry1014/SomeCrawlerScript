@@ -8,7 +8,7 @@ token = os.environ["HIFI_TOKEN"]
 
 with sync_playwright() as p:
     # headless=False, slow_mo=50
-    browser = p.chromium.launch(headless=False, slow_mo=50)
+    browser = p.chromium.launch()
     browser_context = browser.new_context()
     # token过期时间 2025-06-17T13:40:56.053Z
     browser_context.add_cookies([
@@ -19,6 +19,7 @@ with sync_playwright() as p:
     page = browser_context.new_page()
     page.goto("https://www.hifini.com/")
     page.locator('[id="sign"]').click()
-    input()
+    page.wait_for_url("**/sg_sign.htm")
+    print(page.title())
 
     browser.close()
