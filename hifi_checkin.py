@@ -1,0 +1,24 @@
+import json
+import os
+
+from playwright.sync_api import sync_playwright
+
+sid = os.environ["HIFI_SID"]
+token = os.environ["HIFI_TOKEN"]
+
+with sync_playwright() as p:
+    # headless=False, slow_mo=50
+    browser = p.chromium.launch(headless=False, slow_mo=50)
+    browser_context = browser.new_context()
+    # token过期时间 2025-06-17T13:40:56.053Z
+    browser_context.add_cookies([
+        {"name": "bbs_sid", "value": sid, "domain": "www.hifini.com", "path": "/"}
+        , {"name": "bbs_token", "value": token, "domain": "www.hifini.com", "path": "/"}])
+
+    # 登录页
+    page = browser_context.new_page()
+    page.goto("https://www.hifini.com/")
+    page.locator('[id="sign"]').click()
+    input()
+
+    browser.close()

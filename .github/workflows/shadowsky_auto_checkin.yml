@@ -12,21 +12,24 @@ jobs:
   auto_checkin:
     runs-on: ubuntu-latest
     steps:
-    - name: Reference a branch
-      uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.13
-    - name: Install dependencies
-      run: python -m pip install -r requirements.txt
-    - name: Shadowsky Checkin
-      env:
-        SHADOWSKY_ACCOUNT: ${{secrets.SHADOWSKY_ACCOUNT}}
-        SHADOWSKY_PSW: ${{secrets.SHADOWSKY_PSW}}
-        SHADOWSKY_ADDRESS: ${{secrets.SHADOWSKY_ADDRESS}}
-      run:
-        python shadowsky_checkin.py
-    - name: HIFI Checkin
-      run:
-        python hifi_checkin.py
+      - name: Reference a branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          playwright install --with-deps --only-shell chromium
+      - name: Shadowsky Checkin
+        env:
+          SHADOWSKY_ACCOUNT: ${{secrets.SHADOWSKY_ACCOUNT}}
+          SHADOWSKY_PSW: ${{secrets.SHADOWSKY_PSW}}
+          SHADOWSKY_ADDRESS: ${{secrets.SHADOWSKY_ADDRESS}}
+        run:
+          python shadowsky_checkin.py
+
+      - name: HIFI Checkin
+        run:
+          python hifi_checkin.py
