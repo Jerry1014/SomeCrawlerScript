@@ -12,8 +12,8 @@ with sync_playwright() as p:
     browser_context = browser.new_context()
 
     # token
-    # 过期时间 2025-06-17T13:40:56.053Z
-    token_expire_time = 1750138856
+    # 过期时间 2025-08-25T05:19:06.000Z
+    token_expire_time = 1756070346
     if time() > token_expire_time:
         raise Exception("token已过期")
     browser_context.add_cookies([
