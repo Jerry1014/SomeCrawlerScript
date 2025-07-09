@@ -29,10 +29,3 @@ jobs:
           SHADOWSKY_ADDRESS: ${{secrets.SHADOWSKY_ADDRESS}}
         run:
           python shadowsky_checkin.py
-
-      - name: HIFI Checkin
-        env:
-          HIFI_SID: ${{secrets.HIFI_SID}}
-          HIFI_TOKEN: ${{secrets.HIFI_TOKEN}}
-        run:
-          python hifi_checkin.py
