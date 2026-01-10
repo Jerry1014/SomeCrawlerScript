@@ -31,6 +31,6 @@ jobs:
           HIFINI_TOKEN: ${{secrets.HIFINI_TOKEN}}
           HIFI_TOKEN_EXPIRE_TIME: ${{secrets.HIFI_TOKEN_EXPIRE_TIME}}
         run:
-          python hifini_login.py
+          python hifi_checkin.py
 
 # 😀
