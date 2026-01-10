@@ -27,8 +27,8 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: HIFI Checkin
         env:
-          HIFINI_SID: ${{secrets.HIFINI_SID}}
-          HIFINI_TOKEN: ${{secrets.HIFINI_TOKEN}}
+          HIFI_SID: ${{secrets.HIFI_SID}}
+          HIFI_TOKEN: ${{secrets.HIFI_TOKEN}}
           HIFI_TOKEN_EXPIRE_TIME: ${{secrets.HIFI_TOKEN_EXPIRE_TIME}}
         run:
           python hifi_checkin.py
