@@ -5,24 +5,22 @@ from playwright.sync_api import sync_playwright, expect
 
 sid = os.environ["HIFI_SID"]
 token = os.environ["HIFI_TOKEN"]
+token_expire_time = os.environ["HIFI_TOKEN_EXPIRE_TIME"]
 
 with sync_playwright() as p:
-    # headless=False, slow_mo=50
+    # browser = p.chromium.launch(headless=False, slow_mo=50)
     browser = p.chromium.launch()
     browser_context = browser.new_context()
 
-    # token
-    # 过期时间 2025-08-25T05:19:06.000Z
-    token_expire_time = 1756070346
-    if time() > token_expire_time:
+    if time() > int(token_expire_time):
         raise Exception("token已过期")
     browser_context.add_cookies([
-        {"name": "bbs_sid", "value": sid, "domain": "www.hifini.com", "path": "/"}
-        , {"name": "bbs_token", "value": token, "domain": "www.hifini.com", "path": "/"}])
+        {"name": "bbs_sid", "value": sid, "domain": "www.hifiti.com", "path": "/"}
+        , {"name": "bbs_token", "value": token, "domain": "www.hifiti.com", "path": "/"}])
 
     # 签到
     page = browser_context.new_page()
-    page.goto("https://www.hifini.com/")
+    page.goto("https://www.hifiti.com/")
     sign_button_locator = page.locator('[id="sign"]')
     expect(sign_button_locator).to_have_count(1)
     sign_button_locator.click()
