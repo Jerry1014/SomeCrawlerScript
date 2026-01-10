@@ -114,7 +114,7 @@ class Migu:
         result_sign = False
         with open(savepath, 'wb') as f \
                 , self.session.get(song_info['download_url'], headers=headers, stream=True, timeout=60) as response:
-            if response.status_code in [200] :
+            if response.status_code in [200]:
                 total_size = 0
                 for chunk in response.iter_content(chunk_size=None):
                     if not chunk:
@@ -164,3 +164,13 @@ def filterBadCharacter(string, fit_gbk=True):
                 continue
         string = string_clean
     return string.strip().encode('utf-8', 'ignore').decode('utf-8')
+
+
+if __name__ == '__main__':
+    migu = Migu(auto_download=False)
+
+    while True:
+        song_name = input('输入歌名\n')
+        song_info = migu.search(song_name)
+        if song_info:
+            migu.download(song_info)
