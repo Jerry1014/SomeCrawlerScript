@@ -12,24 +12,25 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  hifi_checkin:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Auto Checkin
-      env:
-        HIFINI_SID: ${{secrets.HIFINI_SID}}
-        HIFINI_TOKEN: ${{secrets.HIFINI_TOKEN}}
-        HIFINI_SIGN_URL: ${{secrets.HIFINI_SIGN_URL}}
-      run:
-        python hifini_login.py
+      - name: Reference a branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: HIFI Checkin
+        env:
+          HIFINI_SID: ${{secrets.HIFINI_SID}}
+          HIFINI_TOKEN: ${{secrets.HIFINI_TOKEN}}
+          HIFI_TOKEN_EXPIRE_TIME: ${{secrets.HIFI_TOKEN_EXPIRE_TIME}}
+        run:
+          python hifini_login.py
+
+# 😀
