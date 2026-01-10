@@ -1,21 +1,20 @@
 import os
+from email.policy import default
 
 import requests
 
 # 通过github的secrets输入到此
 email = os.environ["SHADOWSKY_ACCOUNT"]
 psw = os.environ["SHADOWSKY_PSW"]
-address = os.environ['SHADOWSKY_ADDRESS']
+host = os.environ['SHADOWSKY_HOST']
 
-shadowsky_headers = {
-    "user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
+default_headers = {
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"}
 
-login_data = {'email': email, 'passwd': psw, 'remember_me': 'week'}
-shadowsky_session = requests.Session()
-shadowsky_login_page = shadowsky_session.post(address + '/auth/login', headers=shadowsky_headers,
-                                              data=login_data)
-shadowsky_headers.update({'Origin': address, 'Referer': address + '/user',
-                          'Accept': 'application/json, text/javascript, */*; q=0.01',
-                          'X-Requested-With': 'XMLHttpRequest'})
-shadowsky_checkin_page = shadowsky_session.post(address + '/user/checkin', headers=shadowsky_headers)
-print(shadowsky_checkin_page.json())
+session = requests.Session()
+session.headers.update(default_headers)
+login_page = session.post(host + '/auth/login',
+                          data={'email': email, 'passwd': psw, 'remember_me': 'week'})
+
+checkin_page = session.post(host + '/user/checkin')
+print(checkin_page.json())
