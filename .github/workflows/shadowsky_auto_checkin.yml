@@ -26,7 +26,7 @@ jobs:
         env:
           SHADOWSKY_ACCOUNT: ${{secrets.SHADOWSKY_ACCOUNT}}
           SHADOWSKY_PSW: ${{secrets.SHADOWSKY_PSW}}
-          SHADOWSKY_ADDRESS: ${{secrets.SHADOWSKY_ADDRESS}}
+          SHADOWSKY_HOST: ${{secrets.SHADOWSKY_HOST}}
         run:
           python shadowsky_checkin.py
 
