@@ -5,7 +5,7 @@ name: hifini_checkin
 
 on:
   schedule:
-    - cron: '1 0 * * *'
+    - cron: '0 1 * * *'
   workflow_dispatch:
 
 permissions:
